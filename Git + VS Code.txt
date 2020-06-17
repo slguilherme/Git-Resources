@@ -1,0 +1,9 @@
+Set VS Code as the default core editor:
+	git config --global core.editor "C:\Users\slgui\AppData\Local\Programs\Microsoft VS Code\Code.exe" --wait
+
+
+Set VS Code as the default editor for difftool and mergetool:
+    git config --global merge.tool vscode
+    git config --global mergetool.vscode.cmd 'code --wait $MERGED'
+    git config --global diff.tool vscode
+    git config --global difftool.vscode.cmd 'code --wait --diff $LOCAL $REMOTE'

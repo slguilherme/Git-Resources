@@ -1,0 +1,32 @@
+[core]
+	editor = \"C:\\Users\\slgui\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" --wait
+[user]
+	name = Guilherme Lopes
+	email = 56769482+slguilherme@users.noreply.github.com
+[color]
+	ui = auto
+[merge]
+	#conflictStyle = diff3
+	tool = meld
+[mergetool "meld"]
+	path = C:\\Program Files (x86)\\Meld\\Meld.exe
+[mergetool "vscode"]
+	cmd = code --wait $MERGED
+[mergetool "sourcetree"]
+	cmd = "'' "
+	trustExitCode = true
+[mergetool]
+	keepBackup = false
+[diff]
+	tool = meld
+[difftool "vscode"]
+	cmd = code --wait --diff $LOCAL $REMOTE
+[difftool "sourcetree"]
+	cmd = '' \"$LOCAL\" \"$REMOTE\"
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+[credential]
+	helper = manager

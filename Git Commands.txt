@@ -1,0 +1,294 @@
+<> - inputs
+[] - optional
+____________________________________________________________________________
+
+				**Git**
+
+Help:
+	git help <verb>
+	git <verb> --help
+		Ex.: git help config
+		or
+		git config --help
+
+Set global config user values:
+	git config --global user.name "<name>"
+	git config --global user.email "<email>"
+
+Check config:
+	git config --list
+
+Check version:
+	git --version
+
+Update Git for Windows:
+	git update-git-for-windows
+
+Open gitk (commit viewer GUI):
+	gitk
+----------------------------------------------------------------------------
+*Repo Basic Operations*
+
+Initialize a local repository:
+	git init
+	* Initialize as bare, to be used as a remote repo:
+		git init --bare
+
+Set local/repo config user values:
+	git config user.name "<name>"
+	git config user.email "<email>"
+
+Check repository's status:
+	git status
+
+Add modified files to Staging Area:
+	git add <file>
+	* Add all modified files to Staging Area:
+		git add --all
+		or
+		git add -A
+
+Remove files from Staging Area:
+	git reset <file>
+	* Remove everything from Staging Area:
+		git reset
+
+Commit files from Staging Area:
+	git commit -m "<message>"
+
+Check history of commits:
+	git log [<branches>]
+	* For all branches:
+		git log --branches
+	* With graph tree and one line info:
+		git log --graph --oneline [<branches>]
+	* With altered files per commit:
+		git log --stat
+	* Show for <num> commits:
+		git log -<num> [--<...>] [<branches>]
+
+Show differences between one commit and its parent:
+	git show [<commit hash>]
+
+Show differences on current working directory:
+	git diff
+
+Show differences between current working directory and a commit:
+	git diff <commit>
+
+Show differences between commits:
+	git diff <commits>
+
+# "difftool" can be used instead of "diff" to open a GUI
+----------------------------------------------------------------------------
+*Branching*
+
+List branches...
+	only local:
+		git branch
+	only remote:
+		git branch -r
+	both local and remote:
+		git branch -a
+	along with last commit hash and description + upstream if available:
+		git branch -vv
+		# "extra verbose"
+
+Create a new branch:
+	git branch <branch name>
+
+Create a new branch and checkout in it:
+	git checkout -b <branch name>
+	* Same as:
+		git branch <branch name> 
+	+	git checkout <branch name>
+
+Merge branches:
+	git merge <branches>
+	# Ao fazer o merge, o branch atual (último onde foi feito checkout) é
+usado como base para a construção do branch final; portanto, não precisa 
+ser declarado.
+	* Squash/condense all commits of a branch into a single merge commit:
+		git merge --squash <branch>
+	* Force the creation of a merge commit (no fast forward):
+		git merge <branch> --no-ff
+
+Use a GUI to solve merge conflicts:
+	git mergetool
+	* Select the merge tool:
+		git mergetool --tool=<merge tool>
+
+Undo a merge in course:
+	git merge --abort
+
+Show merged branches:
+	git branch --merged
+
+Rebase branches:
+	git rebase <branch to be pulled as base to the current branch>
+
+Delete a branch...
+	only if it has already been fully merged:
+		git branch -d <branch>
+	irrespective of its merged status (force delete):
+		git branch -D <branch>
+
+Set an existing branch to track a remote branch (set upstream branch):
+	git branch --set-upstream-to <remote>/<branch> [<local branch>]
+
+Unset upstream branch:
+	git branch --unset-upstream [<local branch>]
+----------------------------------------------------------------------------
+*Remotes*
+
+Add a remote repository:
+	git remote add <remote name> <https or ssl adress>
+	# It's standard to name the first remote "origin"
+
+Remove a remote repository:
+	git remote remove <remote>
+	or
+	git remote rm <remote>
+
+Get the URL of a remote repo:
+	git remote -v  
+	# "verbose"
+
+Get general info on a remote:
+	git remote show <remote>
+
+Change the URL from a remote repo:
+	git remote set-url <remote> git://new.url.here
+
+Clone a remote repository:
+  	git clone <URL or remote name> [<where to clone>]
+  	* While choosing the remote name on new repo:
+
+Send/push changes to remote:
+	git push <remote> <local branch to be pushed>
+	Ex: git push origin master
+
+Get/pull changes from remote branch and merge with current local branch:
+	git pull <remote> <remote branch to be pulled>
+	# Same effect as
+		git fetch <remote>
+		+ git merge <remote branch>
+
+Push all branches to remote:
+	git push --all <remote>
+
+Push a branch and set upstream:
+	git push -u <remote> <branch>
+
+Fetch information from remote repo:
+	git fetch <remote>
+	# Enables checking out on local versions of new remote branches
+	* Fetch a specific remote branch:
+		git fetch <remote> <remote branch>
+	* Fetch a remote branch (rbranch) with a specific local name (lbranch):
+		git fetch <remote> <rbranch>:<lbranch>
+
+Create a local branch tracking a remote branch and checkout on it:
+	git checkout -b <branch> <remote>/<branch>
+	or
+	git checkout --track <remote>/<branch>
+	# Also happens when running git checkout on a branch that doesn't exist
+and exactly matches a branch name on only one remote.
+
+Delete a remote branch:
+	git push <remote> --delete <branch>
+
+Remove local <remote>/<branch> that has been deleted from remote:
+	git remote prune <remote>
+	* Simulate output only:
+		git remote prune <remote> --dry-run
+----------------------------------------------------------------------------
+*Fixing commits and branches*
+
+Return a modified archive to the last committed version
+	git checkout <archive>
+
+Correct/amend last commit's message:
+	git commit --amend -m "<new message>"
+	# Only changes the message, but generates a new commit hash. Thus, as
+it changes the Git history, shouldn't be used after pushing a commit.
+
+Add files to last commit:
+	git add <files>
+	+
+	git commit --amend
+	# Also changes the commit hash
+
+Copy a commit from one branch to another:
+	git cherry-pick <commit>
+	# Copies the commit to the current branch with a new hash
+
+Reset a branch to a selected commit...
+	while keeping the changes on the staging area:
+		git reset --soft [<commit>]
+	while keeping the changes on the workig directory:
+		git reset [<commit>]
+	and lose all changes made since it:
+		git reset --hard [<commit>]
+
+Delete untracked files or directories:
+	git clean -df
+	#-d for directories + -f for files
+
+List commits in the order they were last referenced:
+	git reflog
+
+Revert/undo commits by emmiting a new commit (instead of altering hashes):
+	git revert <commit to be undone>
+	# Usefull when dealing with external repos and more users
+----------------------------------------------------------------------------
+*Stashing*
+
+Save/hide/stash unstaged changes for later:
+	git stash save ["<message explaining alterations>"]
+
+List stashes:
+	git stash list
+
+Get/fetch stashed changes without deleting the stash:
+	git stash apply [<stash@{n}>]
+
+Fetch stashed changes and delete the stash:
+	git stash pop [<stash>]
+
+Remove/drop a stash from the list:
+	git stash drop [<stash>]
+
+Delete all stashes:
+	git stash clear
+
+# When a <stash@{n}> isn't supplied, the first one (smallest n) is selected
+# Stashes are carried between branches
+____________________________________________________________________________
+
+				**Bash**
+
+Change directory:
+	cd <directory>
+	* Relative path symbols:
+		.	# Same directory
+		..	# Directory above
+
+List directory contents:
+	ls [<directory>]
+	* List hidden files (also ones that starts with .)
+		ls -a
+	* Display detailed output (in a list)
+		ls -l
+	* List all files, in detailed output
+		ls -la
+
+Remove files or directories without prompts:
+	rm -rf <file or directory>
+	* Remove directories:
+		rm -r
+	* Never prompt, ignore nonexisting files:
+		rm -f
+
+Create a new, empty file
+	touch <name.extension>
