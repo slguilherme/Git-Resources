@@ -26,6 +26,7 @@ Update Git for Windows:
 
 Open gitk (commit viewer GUI):
 	gitk
+
 ----------------------------------------------------------------------------
 *Repo Basic Operations*
 
@@ -205,8 +206,11 @@ Remove local <remote>/<branch> that has been deleted from remote:
 ----------------------------------------------------------------------------
 *Fixing commits and branches*
 
-Return a modified archive to the last committed version
-	git checkout <archive>
+Return a modified file to the last committed version:
+	git checkout <file>
+
+Return selected files to a specific commit version:
+	git checkout <commit> -- <files>
 
 Correct/amend last commit's message:
 	git commit --amend -m "<new message>"
@@ -264,6 +268,27 @@ Delete all stashes:
 
 # When a <stash@{n}> isn't supplied, the first one (smallest n) is selected
 # Stashes are carried between branches
+----------------------------------------------------------------------------
+*Files*
+
+Remove untracked files from the working tree:
+	Print out the list of files which would be removed (dry run):
+		git clean -n
+	Delete the files from the repository:
+		git clean -f
+	Other options:
+		Remove directories: -d
+		Remove ignored files: -X
+		Remove ignored and non-ignored files: -x
+
+Stop tracking commited files (remove from repository but keep locally):
+	git rm --cached <files>
+	# Requires adding the file to .gitignore to prevent commiting again
+
+Ignore versioned files:
+	git update-index --assume-unchanged <path/file.ext>
+	* To unset:
+		git update-index --no-assume-unchanged <path/file.ext>
 ____________________________________________________________________________
 
 				**Bash**
@@ -290,5 +315,11 @@ Remove files or directories without prompts:
 	* Never prompt, ignore nonexisting files:
 		rm -f
 
-Create a new, empty file
+Run a file with its default program:
+	on Windows:
+		start "" <file>
+	on Linux:
+		start <file>
+
+Create a new, empty file:
 	touch <name.extension>
